@@ -2,10 +2,6 @@ import type { GeneratedComponent, Provider } from '../types';
 
 const PROVIDERS: readonly Provider[] = ['anthropic', 'google'];
 
-export function parseString(raw: unknown): string | undefined {
-  return typeof raw === 'string' ? raw : undefined;
-}
-
 export function parseProvider(raw: unknown): Provider | undefined {
   return PROVIDERS.find((p) => p === raw);
 }

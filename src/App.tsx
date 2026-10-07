@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { usePersistentState } from './hooks/usePersistentState';
 import { addToHistory } from './utils/promptHistory';
-import { parseProvider, parseString, parseStringArray } from './utils/persistedParsers';
+import { parseProvider, parseStringArray } from './utils/persistedParsers';
 import { PromptInput } from './components/PromptInput';
 import { ComponentCard } from './components/ComponentCard';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
@@ -14,7 +14,7 @@ const PROVIDER_CONFIG = {
 } as const;
 
 function App() {
-  const [apiKey, setApiKey] = usePersistentState('rcg:apiKey', '', parseString);
+  const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [provider, setProvider] = usePersistentState<Provider>('rcg:provider', 'google', parseProvider);
   const [history, setHistory] = usePersistentState<string[]>('rcg:history', [], parseStringArray);

@@ -2,19 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   parseComponents,
   parseProvider,
-  parseString,
   parseStringArray,
 } from './persistedParsers';
-
-describe('parseString', () => {
-  it('문자열은 그대로 반환한다', () => {
-    expect(parseString('abc')).toBe('abc');
-  });
-
-  it('문자열이 아니면 undefined를 반환한다', () => {
-    expect(parseString(1)).toBeUndefined();
-  });
-});
 
 describe('parseProvider', () => {
   it('허용된 프로바이더는 그대로 반환한다', () => {
