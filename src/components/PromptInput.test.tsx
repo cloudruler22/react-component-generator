@@ -52,4 +52,13 @@ describe('PromptInput', () => {
     render(<PromptInput onGenerate={vi.fn()} isLoading={true} />);
     expect(screen.getByRole('button', { name: '생성 중...' })).toBeDisabled();
   });
+
+  it('히스토리 항목을 클릭하면 입력창에 해당 프롬프트가 채워진다', async () => {
+    const user = userEvent.setup();
+    render(<PromptInput onGenerate={vi.fn()} isLoading={false} history={['로그인 폼']} />);
+
+    await user.click(screen.getByRole('button', { name: '로그인 폼' }));
+
+    expect(screen.getByRole('textbox')).toHaveValue('로그인 폼');
+  });
 });

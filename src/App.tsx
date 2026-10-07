@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { usePersistentState } from './hooks/usePersistentState';
+import { addToHistory } from './utils/promptHistory';
+import { parseProvider, parseStringArray } from './utils/persistedParsers';
 import { PromptInput } from './components/PromptInput';
 import { ComponentCard } from './components/ComponentCard';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
@@ -13,7 +16,8 @@ const PROVIDER_CONFIG = {
 function App() {
   const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
-  const [provider, setProvider] = useState<Provider>('google');
+  const [provider, setProvider] = usePersistentState<Provider>('rcg:provider', 'google', parseProvider);
+  const [history, setHistory] = usePersistentState<string[]>('rcg:history', [], parseStringArray);
   const [envKeys, setEnvKeys] = useState<Record<Provider, boolean>>({
     anthropic: false,
     google: false,
@@ -35,6 +39,7 @@ function App() {
       alert(`${PROVIDER_CONFIG[provider].label} API 키를 입력하거나 .env에 설정해주세요.`);
       return;
     }
+    setHistory((prev) => addToHistory(prev, prompt));
     generate(prompt, apiKey || undefined, provider);
   };
 
@@ -67,7 +72,7 @@ function App() {
 
       <main className="workspace">
         <section className="composer-panel" aria-label="컴포넌트 생성">
-          <PromptInput onGenerate={handleGenerate} isLoading={isLoading} />
+          <PromptInput onGenerate={handleGenerate} isLoading={isLoading} history={history} />
         </section>
 
         <aside className="settings-panel" aria-label="실행 설정">
